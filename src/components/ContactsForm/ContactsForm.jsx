@@ -1,46 +1,35 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts } from '../../redux/selectors';
-import { addContact } from '../../redux/contactsSlice';
+import { selectContacts } from '../../redux/selectors';
+import { addContactsThunk } from '../../redux/operation';
 
 const ContactsForm = () => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [data, setData] = useState({ name: '', phone: '' })
 
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
 
   const handleSubmit = event => {
     event.preventDefault();
 
     const isExist = contacts.some(
-      contact => contact.name.toLowerCase().trim() === name.toLowerCase().trim()
+      contact => contact.name.toLowerCase().trim() === data.name.toLowerCase().trim() ||
+        contact.phone === data.phone
     );
 
     if (isExist) {
-      alert(`${name} is already in contacts.`);
+      alert(`${data.name} is already in contacts.`);
       return;
     }
 
-    dispatch(addContact({ name, number }));
-    setName('');
-    setNumber('');
+    dispatch(addContactsThunk({ name: data.name, phone: data.phone }));
+    setData({ name: '', phone: '' });
   };
 
   const handleChange = event => {
-    const { name, value } = event.target;
+    const { name, phone } = event.target;
 
-    switch (name) {
-      case 'name':
-        setName(value);
-        break;
-      case 'number':
-        setNumber(value);
-        break;
-
-      default:
-        break;
-    }
+    setData({...data, [name] : phone})
   };
 
   return (
@@ -50,7 +39,7 @@ const ContactsForm = () => {
         <input
           type="text"
           name="name"
-          value={name}
+          value={data.name}
           onChange={handleChange}
           pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           required
@@ -61,8 +50,8 @@ const ContactsForm = () => {
         Number
         <input
           type="tel"
-          name="number"
-          value={number}
+          name="phone"
+          value={data.phone}
           onChange={handleChange}
           pattern="\+?\d{1,4}?[ .\-\s]?\(?\d{1,3}?\)?[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,9}"
           required
