@@ -3,11 +3,7 @@ import { useSelector } from 'react-redux';
 import { selectVisibleContacts } from '../../redux/selectors';  //getContacts, getFilter,
 
 const ContactList = () => {
-  // const contacts = useSelector(getContacts);
-  // const filter = useSelector(getFilter);
   const filterContacts = useSelector(selectVisibleContacts);  
-
-  //const sortedContacts = [...filterContacts].sort((a, b) => b.name - a.name);
 
   return (
     <>
