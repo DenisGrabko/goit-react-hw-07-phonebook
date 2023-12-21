@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectContacts, selectIsLoading, selectError } from '../../redux/selectors';
 import { getContactsThunk } from '../../redux/operation';
 
+
 const App = () => {
   const contacts = useSelector(selectContacts);
   const isLoading = useSelector(selectIsLoading);
@@ -18,7 +19,7 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getContactsThunk())
+    dispatch(getContactsThunk());
   }, [dispatch]);
 
   return (
@@ -30,10 +31,10 @@ const App = () => {
         {contacts.length > 0 ? (
           <Filter />
         ) : (
-          <Notification message="No contacts yet"/>
+          <Notification message="No contacts yet" />
         )}
         {error !== null && error}
-        {isLoading && <Loader/>}
+        {isLoading && <Loader />}
         {contacts.length > 0 && <ContactList />}
       </Section>
     </Container>
@@ -41,10 +42,5 @@ const App = () => {
 };
 
 export default App;
-
-
-
-
-
 
 

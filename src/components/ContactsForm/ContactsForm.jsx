@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { nanoid } from 'nanoid';
 import { selectContacts } from '../../redux/selectors';
 import { addContactsThunk } from '../../redux/operation';
+import { useDispatch, useSelector } from 'react-redux';
 
 const ContactsForm = () => {
   const [data, setData] = useState({ name: '', phone: '' })
@@ -22,14 +23,13 @@ const ContactsForm = () => {
       return;
     }
 
-    dispatch(addContactsThunk({ name: data.name, phone: data.phone }));
+    dispatch(addContactsThunk({ name: data.name, phone: data.phone, id: nanoid() }));
     setData({ name: '', phone: '' });
   };
 
   const handleChange = event => {
-    const { name, phone } = event.target;
-
-    setData({...data, [name] : phone})
+    const { name, value } = event.target;
+    setData({...data, [name] : value})
   };
 
   return (

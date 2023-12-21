@@ -6,10 +6,10 @@ import {
 } from './operation';
 import {
   handlePending,
-  handleFullfieldGet,
-  handleFullfieldAdd,
-  handleFullfieldDelete,
-  handleReject,
+  handleFulfieldGet,
+  handleFulfieldAdd,
+  handleFulfilledDelete,
+  handleRejected,
 } from './contactReducer';
 
 const handleAction = type =>
@@ -18,13 +18,14 @@ const handleAction = type =>
     addContactsThunk[type],
     deleteContactsThunk[type]
   );
+
 const status = {
-  Pending: 'pending',
-  Rejected: 'rejected',
+  PENDING: 'pending',
+  REGECTED: 'rejected',
 };
 
 const initialState = {
-  contacts: [],
+  contactItems: [],
   isLoading: false,
   error: null,
 };
@@ -33,13 +34,13 @@ export const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
   extraReducers: builder => {
-    const { Pending, Rejected } = status;
+    const { PENDING, REGECTED } = status;
     builder
-      .addCase(getContactsThunk.fulfilled, handleFullfieldGet)
-      .addCase(addContactsThunk.fulfilled, handleFullfieldAdd)
-      .addCase(deleteContactsThunk.fulfilled, handleFullfieldDelete)
-      .addMatcher(handleAction(Pending), handlePending)
-      .addMatcher(handleAction(Rejected), handleReject);
+      .addCase(getContactsThunk.fulfilled, handleFulfieldGet)
+      .addCase(addContactsThunk.fulfilled, handleFulfieldAdd)
+      .addCase(deleteContactsThunk.fulfilled, handleFulfilledDelete)
+      .addMatcher(handleAction(PENDING), handlePending)
+      .addMatcher(handleAction(REGECTED), handleRejected);
   },
 });
 
